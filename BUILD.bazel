@@ -1,0 +1,35 @@
+load("@rules_go//go:def.bzl", "go_binary")
+load("//:legacy_cli.bzl", "legacy_cli")
+
+# for fun and testing lets chain together legacy-cli 3 times
+
+# this is the first one, and reads <project-root>/file.json
+legacy_cli(
+  name = "file.step-1.json",
+  tool = ":legacy-cli",
+  file_name = "build/artifact-spec.json",
+  input = ":file.json",
+)
+
+# this is the second one, which reads file.step-1.json
+legacy_cli(
+  name = "file.step-2.json",
+  tool = ":legacy-cli",
+  file_name = "build/artifact-spec.json",
+  input = ":file.step-1.json",
+)
+
+# this is the final one, which reads file.step-2.json and outputs build/file.json
+legacy_cli(
+  name = "build/file.json",
+  tool = ":legacy-cli",
+  file_name = "build/artifact-spec.json",
+  input = ":file.step-2.json",
+)
+
+# this just gives us an example legacy-cli binary.
+# this one reads a json file, then increments .count
+go_binary(
+  name = "legacy-cli",
+  srcs = ["src/legacy_cli.go"]
+)
