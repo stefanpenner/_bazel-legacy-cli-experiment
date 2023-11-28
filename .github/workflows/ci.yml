@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'v*' # older version branches
+    tags:
+      - '*'
+  pull_request: {}
+
+
+jobs:
+  test:
+    name: Tests
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v2
+      - name: Mount bazel cache # Optional
+        uses: actions/cache@v3
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+      - run: bazel test //:test-suite
