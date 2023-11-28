@@ -1,7 +1,9 @@
 load("@rules_go//go:def.bzl", "go_binary")
-load("//:legacy_cli.bzl", "legacy_cli")
-
+load(":legacy_cli.bzl", "legacy_cli")
+load(":legacy_cli_test.bzl", "legacy_cli_test_suite")
 # for fun and testing lets chain together legacy-cli 3 times
+
+legacy_cli_test_suite(name = "test-suite")
 
 # this is the first one, and reads <project-root>/file.json
 legacy_cli(
