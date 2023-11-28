@@ -35,6 +35,11 @@ just have bazel installed
 ```
 bazel build :build/file.json
 ```
+## testing
+
+```sh 
+bazel test //:test-suite
+```
 
 ## Contributing
 PRs welcome
